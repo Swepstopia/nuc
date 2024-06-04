@@ -229,7 +229,7 @@ function install_klist {
 
 	tool="klist"
 	echo -e "\n########## Installing KLIST ##########\n"
-	apt install krb5-user
+	apt install krb5-user -y
 }
 
 
