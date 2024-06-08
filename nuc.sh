@@ -232,7 +232,7 @@ function install_klist {
 	apt install krb5-user -y
 }
 
-function Ghostpack-CompiledBinaries {
+function install_Ghostpack-CompiledBinaries {
 
 	tool="Ghostpack-CompiledBinaries"
         echo -e "\n########## Installing $tool ##########\n"
@@ -265,6 +265,7 @@ function start_script {
 	install_mitm6
 	install_default_creds
 	install_impacket
+ 	install_Ghostpack-CompiledBinaries
 	configure_crackmapexec
 	install_headers
 	install_eaphammer
@@ -286,6 +287,5 @@ if [ "$EUID" -ne 0 ]; then
     echo -e "\nError\nThis script must be run with sudo."
     exit 1
 else
-#	start_script
-	Ghostpack-CompiledBinaries
+	start_script
 fi
