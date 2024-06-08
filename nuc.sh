@@ -244,6 +244,29 @@ function install_Ghostpack-CompiledBinaries {
 }
 
 
+function install_whisker {
+
+        tool="pywhisker"
+        echo -e "\n########## Installing $tool ##########\n"
+        if [ -d "$install_directory/$tool" ]; then
+                echo -e "\n$tool is aleady installed in '$install_directory/.\nSkipping $tool"
+        else
+                git clone https://github.com/ShutdownRepo/pywhisker.git $install_directory/$tool
+		cd $install_directory/$tool
+		chown $(whoami):$(whoami) $install_directory/$tool
+		python3 -m venv . 
+		source bin/activate
+		pip install -r requirements.txt
+		chmod 755 $install_directory/$tool/pywhisker.py
+		deactivate
+		wget https://github.com/Swepstopia/pywhisker-exe/raw/main/Whisker.exe
+        fi
+
+}
+
+
+
+
 
 ##This function is called from the main for loop
 function start_script {
@@ -268,10 +291,14 @@ function start_script {
  	install_Ghostpack-CompiledBinaries
 	configure_crackmapexec
 	install_headers
+	Ghostpack-CompiledBinaries
 	install_eaphammer
+	install_whisker
 	install_klist
 	#install_wifi_drivers
 	tools_installed
+	chown -R $(whoami):$(whoami) $install_directory
+	apt autoremove
 }
 
 #######################################################
