@@ -232,7 +232,16 @@ function install_klist {
 	apt install krb5-user -y
 }
 
+function Ghostpack-CompiledBinaries {
 
+	tool="Ghostpack-CompiledBinaries"
+        echo -e "\n########## Installing $tool ##########\n"
+        if [ -d "$install_directory/$tool" ]; then
+                echo -e "\n$tool is aleady installed in '$install_directory/.\nSkipping $tool"
+        else
+                git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git $install_directory/$tool
+        fi
+}
 
 
 
@@ -277,5 +286,6 @@ if [ "$EUID" -ne 0 ]; then
     echo -e "\nError\nThis script must be run with sudo."
     exit 1
 else
-	start_script
+#	start_script
+	Ghostpack-CompiledBinaries
 fi
