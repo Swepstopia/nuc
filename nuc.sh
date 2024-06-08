@@ -291,7 +291,7 @@ function start_script {
  	install_Ghostpack-CompiledBinaries
 	configure_crackmapexec
 	install_headers
-	Ghostpack-CompiledBinaries
+	install_Ghostpack-CompiledBinaries
 	install_eaphammer
 	install_whisker
 	install_klist
