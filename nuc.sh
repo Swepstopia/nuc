@@ -296,9 +296,9 @@ function start_script {
 	install_whisker
 	install_klist
 	#install_wifi_drivers
-	tools_installed
 	chown -R $(whoami):$(whoami) $install_directory
 	apt autoremove
+ 	tools_installed
 }
 
 #######################################################
