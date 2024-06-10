@@ -265,6 +265,18 @@ function install_whisker {
 }
 
 
+function install_forest-trust-tools {
+
+	tool="forest-trust-tools"
+        echo -e "\n########## Installing $tool ##########\n"
+        if [ -d "$install_directory/$tool" ]; then
+                echo -e "\n$tool is aleady installed in '$install_directory/.\nSkipping $tool"
+        else
+                git clone https://github.com/dirkjanm/forest-trust-tools.git $install_directory/$tool
+		cd $install_directory/$tool
+		chmod 755 *.py
+        fi
+}
 
 
 
@@ -295,6 +307,7 @@ function start_script {
 	install_eaphammer
 	install_whisker
 	install_klist
+	install_forest-trust-tools
 	#install_wifi_drivers
 	chown -R $(whoami):$(whoami) $install_directory
 	apt autoremove
@@ -307,12 +320,12 @@ function start_script {
 
 install_directory="/opt" #Used in all of the functions to set the install directory
 
-echo -e "\nThis script installs all tools in /opt/"
 
 #Check if running as sudo. 
 if [ "$EUID" -ne 0 ]; then
     echo -e "\nError\nThis script must be run with sudo."
     exit 1
 else
+	echo -e "\nThis script installs all tools in $install_directory/"
 	start_script
 fi
