@@ -280,6 +280,54 @@ function install_forest-trust-tools {
 
 
 
+function install_hostapd_mana {
+
+        tool="hostapd-mana"
+        echo -e "\n########## Installing $tool ##########\n"
+        if [ -d "$install_directory/$tool" ]; then
+                echo -e "\n$tool is aleady installed in '$install_directory/.\nSkipping $tool"
+        else
+                apt-get --yes install build-essential pkg-config git libnl-genl-3-dev libssl-dev
+                git clone https://github.com/sensepost/hostapd-mana $install_directory/$tool
+                cd $install_directory/$tool
+                make -C hostapd
+
+                echo -e "\n########## $tool Installed ##########\n"
+                echo -e "\n########## Installing $tool Certificates ##########\n"
+                openssl genrsa -out $install_directory/$tool/server.key 2048
+                openssl req -new -sha256 -key $install_directory/$tool/server.key -out $install_directory/$tool/csr.csr
+                openssl req -x509 -sha256 -days 365 -key $install_directory/$tool/server.key -in $install_directory/$tool/csr.csr -out $install_directory/$tool/server.pem
+                ln -s server.pem ca.pem
+
+                openssl dhparam 2048 > $install_directory/$tool/dhparam.pem
+                echo '*         PEAP,TTLS,TLS,MD5,GTC' >> $install_directory/$tool/hostapd.eap_user
+                echo '"t"       TTLS-MSCHAPV2,MSCHAPV2,MD5,GTC,TTLS-PAP,TTLS-CHAP,TTLS-MSCHAP  "1234test"  [2]' >> $install_directory/$tool/hostapd.eap_user
+
+                echo 'interface=wlan1' >> $install_directory/$tool/hostapd.conf
+                echo 'ssid=FREE-WIFI' >> $install_directory/$tool/hostapd.conf
+                echo 'wpa=3' >> $install_directory/$tool/hostapd.conf
+                echo 'wpa_key_mgmt=WPA-EAP' >> $install_directory/$tool/hostapd.conf
+                echo 'wpa_pairwise=TKIP CCMP' >> $install_directory/$tool/hostapd.conf
+                echo 'auth_algs=3' >> $install_directory/$tool/hostapd.conf
+                echo -e '\nieee8021x=1' >> $install_directory/$tool/hostapd.conf
+                echo 'eapol_key_index_workaround=0' >> $install_directory/$tool/hostapd.conf
+                echo 'eap_server=1' >> $install_directory/$tool/hostapd.conf
+                echo -e 'eap_user_file=hostapd.eap_user' >> $install_directory/$tool/hostapd.conf
+                echo -e 'ca_cert=ca.pem' >> $install_directory/$tool/hostapd.conf
+                echo -e 'server_cert=server.pem' >> $install_directory/$tool/hostapd.conf
+                echo -e 'private_key=server.key' >> $install_directory/$tool/hostapd.conf
+                echo -e 'private_key_passwd=' >> $install_directory/$tool/hostapd.conf
+                echo -e 'dh_file=dhparam.pem' >> $install_directory/$tool/hostapd.conf
+        fi
+}
+
+
+
+
+
+
+
+
 ##This function is called from the main for loop
 function start_script {
 
@@ -308,6 +356,7 @@ function start_script {
 	install_whisker
 	install_klist
 	install_forest-trust-tools
+ 	install_hostapd_mana
 	#install_wifi_drivers
 	chown -R $(whoami):$(whoami) $install_directory
 	apt autoremove
