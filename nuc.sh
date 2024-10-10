@@ -22,6 +22,15 @@ function install_donpapi {
 	pipx ensurepath
 }
 
+
+function install_pipx {
+
+	echo -e "\n########## Installing PIPX ##########\n"
+	apt install pipx -y
+}
+
+
+
 function install_certipy {
 
 	tool="Certipy"
@@ -175,14 +184,14 @@ function install_default_creds {
 
 	tool="defaultcreds-cheat-sheet"
 	echo -e "\n########## Installing $tool ##########\n"
-	pip3 install $tool
+	pip3 install $tool -y
 }
 
 
 function install_impacket {
 	tool="impacket-scripts"
 	echo -e "\n########## Installing $tool ##########\n"
-	apt install $tool
+	apt install $tool -y
 }
 
 function configure_crackmapexec {
@@ -200,6 +209,15 @@ function install_eaphammer {
 	echo -e "\n########## Installing $tool ##########\n"
 	apt install $tool -y
 }
+
+function install_gnupg2 {
+
+	tool="gnupg2"
+	echo -e "\n########## Installing $tool ##########\n"
+	apt install $tool -y
+}
+
+
 
 
 function install_wifi_drivers {
@@ -263,6 +281,8 @@ function install_whisker {
         fi
 
 }
+
+
 
 
 function install_forest-trust-tools {
@@ -332,6 +352,8 @@ function install_hostapd_mana {
 function start_script {
 
 	update_repositories
+ 	install_gnupg2
+ 	install_pipx
 	install_PetitPotam
 	install_donpapi
 	install_certipy
