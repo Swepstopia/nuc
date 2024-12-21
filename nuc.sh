@@ -22,6 +22,17 @@ function install_donpapi {
 	pipx ensurepath
 }
 
+function install_lapstoolkit{
+
+	tool="LAPSToolkit"
+ 	echo -e "\n########## Installing $tool ##########\n"
+  	if [ -d "$install_directory/$tool" ]; then
+		echo -e "\n$tool is aleady installed in '$install_directory/.\nSkipping $tool"
+	else
+		git clone https://github.com/leoloobeek/LAPSToolkit.git $install_directory/$tool
+	fi
+}
+
 
 function install_pipx {
 
@@ -377,6 +388,7 @@ function start_script {
 	install_eaphammer
 	install_whisker
 	install_klist
+ 	install_lapstoolkit
 	install_forest-trust-tools
  	install_hostapd_mana
 	#install_wifi_drivers
