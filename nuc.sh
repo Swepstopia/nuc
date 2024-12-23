@@ -22,7 +22,7 @@ function install_donpapi {
 	pipx ensurepath
 }
 
-function install_lapstoolkit{
+function install_lapstoolkit {
 
 	tool="LAPSToolkit"
  	echo -e "\n########## Installing $tool ##########\n"
